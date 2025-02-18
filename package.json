@@ -1,0 +1,14 @@
+{
+  "name": "se_final_backend",
+  "version": "1.0.0",
+  "description": "news explorer app backend",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Parnika Singh",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
