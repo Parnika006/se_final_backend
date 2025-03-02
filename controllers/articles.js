@@ -5,7 +5,7 @@ const BadRequestError = require("../errors/bad-request-err");
 
 const NotFoundError = require("../errors/not-found-err");
 
-const createArticle = (req, res, next) => {
+/* const createArticle = (req, res, next) => {
   const {
     source,
     author,
@@ -16,6 +16,7 @@ const createArticle = (req, res, next) => {
     publishedAt,
     content,
   } = req.body;
+
 
   Article.create({
     source,
@@ -37,6 +38,30 @@ const createArticle = (req, res, next) => {
         next(err);
       }
     });
+}; */
+
+const createArticle = (req, res, next) => {
+  const { article, searchQuery } = req.body;
+
+  if (!article || !searchQuery) {
+    return next(new BadRequestError("Missing article data or search query"));
+  }
+
+  // Remove `source.id` if it exists as its always null
+  if (article.source) {
+    delete article.source.id;
+  }
+
+  return Article.create({ ...article, searchQuery }) // ✅ Explicitly return the Promise
+    .then((savedArticle) => res.send({ data: savedArticle }))
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        return next(
+          new BadRequestError("The id string is in an invalid format")
+        ); // ✅ Add return
+      }
+      return next(err); // ✅ Add return to satisfy ESLint
+    });
 };
 
 const getArticle = (req, res, next) => {
@@ -49,15 +74,22 @@ const getArticle = (req, res, next) => {
 
 const deleteArticle = (req, res, next) => {
   const { articleId } = req.params;
-  Article.findByIdAndDelete(articleId)
+
+  Article.findById(articleId)
     .orFail()
     .then((article) => {
       if (String(article.owner) !== req.user._id) {
+        console.error(
+          "Permission denied! Article owner ID:",
+          article.owner,
+          "Logged-in user ID:",
+          req.user._id
+        );
         throw new ForbiddenError(
           "You do not have permission to delete this item"
         );
       }
-      return article.deleteOne();
+      return Article.findByIdAndDelete();
     })
     .then(() => res.status(200).send({ message: "Successfuly Deleted" }))
     .catch((err) => {

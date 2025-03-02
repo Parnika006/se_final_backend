@@ -26,7 +26,16 @@ app.use(limiter);
 app.use(helmet());
 
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
+
+const corsOptions = {
+  origin: "http://localhost:3000", // Replace with production domain
+  methods: ["GET", "POST", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
+
 app.use(requestLogger); // before routes
 
 app.post("/signin", login);

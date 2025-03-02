@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 
 const articleSchema = new mongoose.Schema({
   source: {
-    type: String,
+    // id: { type: String, default: null },
+    name: { type: String },
   },
   author: {
     type: String,
@@ -13,9 +14,7 @@ const articleSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  url: {
-    type: String,
-  },
+  url: { type: String, required: true, unique: true },
   urlToImage: {
     type: String,
   },
@@ -25,6 +24,8 @@ const articleSchema = new mongoose.Schema({
   content: {
     type: String,
   },
+  searchQuery: { type: String, required: true },
+  owner: { type: mongoose.Schema.Types.ObjectId, required: true },
 });
 
 module.exports = mongoose.model("article", articleSchema);
