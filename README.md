@@ -7,6 +7,7 @@ The backend of **News Explorer** is built with **Node.js and Express.js**, provi
 ## 🔗 Repository
 
 - 🛠 [Backend Repository](https://github.com/Parnika006/se_final_backend)
+- 🌍 Live APP: https://www.newex.crabdance.com 
 
 ## 🛠 Tech Stack
 
