@@ -30,7 +30,7 @@ app.use(express.json());
 // app.use(cors());
 
 const corsOptions = {
-  origin: "http://localhost:3000", // Replace with production domain
+  origin: "https://api.newex.crabdance.com", // Replace with production domain
   methods: ["GET", "POST", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
